@@ -43,7 +43,9 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
   },
 });
+
 ListItem.propTypes = {
   singleMedia: PropTypes.object.isRequired,
 };
+
 export default ListItem;
