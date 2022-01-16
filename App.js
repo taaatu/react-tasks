@@ -9,8 +9,8 @@ const App = () => {
     <>
       <SafeAreaView style={GlobalStyles.AndroidSafeArea}>
         <List />
+        <StatusBar style="auto" />
       </SafeAreaView>
-      <StatusBar style="auto" />
     </>
   );
 };
