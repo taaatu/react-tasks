@@ -9,7 +9,7 @@ const Login = ({navigation}) => {
   const {setIsLoggedIn} = useContext(MainContext);
 
   const checkToken = async () => {
-    const userToken = AsyncStorage.getItem('userToken');
+    const userToken = await AsyncStorage.getItem('userToken');
 
     if (userToken === 'abc') {
       setIsLoggedIn(true);
