@@ -1,54 +1,29 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
+import {Avatar, Button, ListItem as NBListItem} from 'react-native-elements';
 
 const ListItem = ({navigation, singleMedia}) => {
   return (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() => {
-        navigation.navigate('Single', {file: singleMedia});
-      }}
-    >
-      <View style={styles.imageBox}>
-        <Image
-          source={{uri: uploadsUrl + singleMedia.thumbnails.w160}}
-          style={styles.image}
-        />
-      </View>
-      <View style={styles.textBox}>
-        <Text style={styles.title}>{singleMedia.title}</Text>
-        <Text>{singleMedia.description}</Text>
-      </View>
-    </TouchableOpacity>
+    <NBListItem bottomDivider>
+      <Avatar
+        size="large"
+        source={{uri: uploadsUrl + singleMedia.thumbnails.w160}}
+      ></Avatar>
+      <NBListItem.Content>
+        <NBListItem.Title h4>{singleMedia.title}</NBListItem.Title>
+        <NBListItem.Subtitle>{singleMedia.description}</NBListItem.Subtitle>
+      </NBListItem.Content>
+      <Button
+        onPress={() => {
+          navigation.navigate('Single', {file: singleMedia});
+        }}
+        title={'View'}
+        containerStyle={{width: 90}}
+      />
+    </NBListItem>
   );
 };
-const styles = StyleSheet.create({
-  item: {
-    flexDirection: 'row',
-    backgroundColor: 'lightgrey',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15,
-    marginBottom: 5,
-  },
-  imageBox: {
-    flex: 2,
-  },
-  image: {
-    flex: 2,
-  },
-  textBox: {
-    flex: 3,
-    padding: 10,
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    paddingBottom: 3,
-  },
-});
 
 ListItem.propTypes = {
   singleMedia: PropTypes.object.isRequired,

@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Single from '../views/Single';
 import Login from '../views/Login';
 import {MainContext} from '../contexts/MainContext';
+import {Icon} from 'react-native-elements';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -14,8 +15,25 @@ const Stack = createNativeStackNavigator();
 const TabScreen = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home}></Tab.Screen>
-      <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({color}) => <Icon name="home" color={color} size={26} />,
+        }}
+      ></Tab.Screen>
+
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color}) => (
+            <Icon name="account-box" color={color} size={26} />
+          ),
+        }}
+      ></Tab.Screen>
     </Tab.Navigator>
   );
 };

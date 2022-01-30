@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, SafeAreaView, Text, Button, Image} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
+import {Card, Text, Button} from 'react-native-elements';
 
 const Profile = () => {
   const {setIsLoggedIn, user} = useContext(MainContext);
@@ -39,12 +39,11 @@ const Profile = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Profile</Text>
-      <Text>{user.username}</Text>
-      <Image
+    <Card>
+      <Card.Title h2>{user.username}</Card.Title>
+      <Card.Image
         source={{uri: avatar}}
-        style={{width: '80%', height: '50%'}}
+        style={{width: '80%', height: '70%'}}
         resizeMode="contain"
       />
       <Text>{user.email}</Text>
@@ -56,18 +55,8 @@ const Profile = () => {
           setIsLoggedIn(false);
         }}
       />
-    </SafeAreaView>
+    </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
-  },
-});
 
 export default Profile;
