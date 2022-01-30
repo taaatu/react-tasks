@@ -61,7 +61,7 @@ const Login = ({navigation}) => {
         ) : (
           <Card>
             <Card.Title h4>Register</Card.Title>
-            <RegisterForm />
+            <RegisterForm setFormToggle={setFormToggle} />
           </Card>
         )}
       </KeyboardAvoidingView>
