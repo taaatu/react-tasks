@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -11,10 +11,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import {Card} from 'react-native-elements';
+import {ButtonGroup, Card} from 'react-native-elements';
 
 const Login = ({navigation}) => {
   // props is needed for navigation
+  const [formToggle, setFormToggle] = useState(true);
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserByToken} = useUser();
 
@@ -46,13 +47,23 @@ const Login = ({navigation}) => {
     >
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
         <Card>
-          <Card.Title h4>Login</Card.Title>
-          <LoginForm />
+          <ButtonGroup
+            onPress={() => setFormToggle(!formToggle)}
+            selectedIndex={formToggle ? 0 : 1}
+            buttons={['Login', 'Register']}
+          />
         </Card>
-        <Card>
-          <Card.Title h4>Register</Card.Title>
-          <RegisterForm />
-        </Card>
+        {formToggle ? (
+          <Card>
+            <Card.Title h4>Login</Card.Title>
+            <LoginForm />
+          </Card>
+        ) : (
+          <Card>
+            <Card.Title h4>Register</Card.Title>
+            <RegisterForm />
+          </Card>
+        )}
       </KeyboardAvoidingView>
     </TouchableOpacity>
   );
