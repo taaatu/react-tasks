@@ -1,11 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ScrollView} from 'react-native';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import {Card, Text, Button} from 'react-native-elements';
+import {PropTypes} from 'prop-types';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const {setIsLoggedIn, user} = useContext(MainContext);
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {postTag, getFilesByTag} = useTag();
@@ -55,8 +57,18 @@ const Profile = () => {
           setIsLoggedIn(false);
         }}
       />
+      <Button
+        title="Modify user"
+        onPress={() => {
+          navigation.navigate('Modify user');
+        }}
+      />
     </Card>
   );
+};
+
+Profile.propTypes = {
+  navigation: PropTypes.object,
 };
 
 export default Profile;

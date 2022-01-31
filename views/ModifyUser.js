@@ -1,12 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {useContext} from 'react';
 import {Alert, View} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
 import {Input, Button} from 'react-native-elements';
+import {MainContext} from '../contexts/MainContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {PropTypes} from 'prop-types';
 
-const RegisterForm = ({setFormToggle}) => {
-  const {postUser, checkUsername} = useUser();
+const ModifyUser = ({navigation}) => {
+  const {checkUsername, putUser} = useUser();
+  const {user, setUser} = useContext(MainContext);
   const {
     control,
     handleSubmit,
@@ -14,29 +17,34 @@ const RegisterForm = ({setFormToggle}) => {
     getValues,
   } = useForm({
     defaultValues: {
-      username: '',
+      username: user.username,
       password: '',
       confirmPassword: '',
-      email: '',
-      full_name: '',
+      email: user.email,
+      full_name: user.full_name,
     },
     mode: 'onBlur',
   });
+
   const onSubmit = async (data) => {
     console.log(data);
     try {
       delete data.confirmPassword;
-      const userData = await postUser(data);
-      console.log('register onSubmit', userData);
+      if (data.password === '') {
+        delete data.password;
+      }
+      const userToken = await AsyncStorage.getItem('userToken');
+      const userData = await putUser(data, userToken);
       if (userData) {
-        Alert.alert('Success', 'User created successfully.');
-        setFormToggle(true);
+        Alert.alert('Success', userData.message);
+        delete data.password;
+        setUser(data);
+        navigation.navigate('Profile');
       }
     } catch (error) {
       console.error(error);
     }
   };
-
   return (
     <View>
       <Controller
@@ -50,7 +58,7 @@ const RegisterForm = ({setFormToggle}) => {
           validate: async (value) => {
             try {
               const available = await checkUsername(value);
-              if (available) {
+              if (available || user.username === value) {
                 return true;
               } else {
                 return 'Username is already taken.';
@@ -76,15 +84,16 @@ const RegisterForm = ({setFormToggle}) => {
       <Controller
         control={control}
         rules={{
-          required: {value: true, message: 'This is required.'},
-          /* pattern: {
-            value: /(?=.*[\p{Lu}])(?=.*[0-9]).{8,}/u,
-            message: 'Min 8, Uppercase, Number',
-          }, */
           minLength: {
             value: 5,
             message: 'Password has to be at least 5 characters.',
           },
+          /*
+          pattern: {
+            value: /(?=.*[\p{Lu}])(?=.*[0-9]).{8,}/u,
+            message: 'Min 8, Uppercase, Number',
+          },
+          */
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -103,7 +112,6 @@ const RegisterForm = ({setFormToggle}) => {
       <Controller
         control={control}
         rules={{
-          required: {value: true, message: 'This is required.'},
           validate: (value) => {
             const {password} = getValues();
             if (value === password) {
@@ -120,7 +128,7 @@ const RegisterForm = ({setFormToggle}) => {
             value={value}
             autoCapitalize="none"
             secureTextEntry={true}
-            placeholder="Confirm password"
+            placeholder="Confirm Password"
             errorMessage={
               errors.confirmPassword && errors.confirmPassword.message
             }
@@ -135,7 +143,7 @@ const RegisterForm = ({setFormToggle}) => {
           required: {value: true, message: 'This is required.'},
           pattern: {
             value: /\S+@\S+\.\S+$/,
-            message: 'Has to be valid email',
+            message: 'Has to be valid email.',
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
@@ -172,13 +180,13 @@ const RegisterForm = ({setFormToggle}) => {
         name="full_name"
       />
 
-      <Button title="Register" onPress={handleSubmit(onSubmit)} />
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };
 
-RegisterForm.propTypes = {
-  setFormToggle: PropTypes.func,
+ModifyUser.propTypes = {
+  navigation: PropTypes.object,
 };
 
-export default RegisterForm;
+export default ModifyUser;
