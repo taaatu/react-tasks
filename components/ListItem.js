@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
-import {Avatar, Button, ListItem as NBListItem} from 'react-native-elements';
+import {
+  Avatar,
+  Button,
+  ButtonGroup,
+  ListItem as NBListItem,
+} from 'react-native-elements';
 
-const ListItem = ({navigation, singleMedia}) => {
+const ListItem = ({navigation, singleMedia, myFilesOnly}) => {
   return (
     <NBListItem bottomDivider>
       <Avatar
@@ -21,6 +26,17 @@ const ListItem = ({navigation, singleMedia}) => {
         title={'View'}
         containerStyle={{width: 90}}
       />
+      {myFilesOnly && (
+        <ButtonGroup
+          onPress={(index) => {
+            if (index === 0) {
+              navigation.navigate('Modify', {});
+            } else {
+            }
+          }}
+          buttons={['Modify', 'Delete']}
+        />
+      )}
     </NBListItem>
   );
 };
@@ -28,6 +44,7 @@ const ListItem = ({navigation, singleMedia}) => {
 ListItem.propTypes = {
   singleMedia: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
+  myFilesOnly: PropTypes.bool,
 };
 
 export default ListItem;

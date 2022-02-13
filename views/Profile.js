@@ -41,29 +41,37 @@ const Profile = ({navigation}) => {
   }, []);
 
   return (
-    <Card>
-      <Card.Title h2>{user.username}</Card.Title>
-      <Card.Image
-        source={{uri: avatar}}
-        style={{width: '80%', height: '70%'}}
-        resizeMode="contain"
-      />
-      <Text>{user.email}</Text>
-      <Text>{user.full_name}</Text>
-      <Button
-        title="Log out"
-        onPress={async () => {
-          await AsyncStorage.clear();
-          setIsLoggedIn(false);
-        }}
-      />
-      <Button
-        title="Modify user"
-        onPress={() => {
-          navigation.navigate('Modify user');
-        }}
-      />
-    </Card>
+    <ScrollView>
+      <Card>
+        <Card.Title h2>{user.username}</Card.Title>
+        <Card.Image
+          source={{uri: avatar}}
+          style={{width: '80%', height: undefined, aspectRatio: 1}}
+          resizeMode="contain"
+        />
+        <Text>{user.email}</Text>
+        <Text>{user.full_name}</Text>
+        <Button
+          title="Log out"
+          onPress={async () => {
+            await AsyncStorage.clear();
+            setIsLoggedIn(false);
+          }}
+        />
+        <Button
+          title="Modify user"
+          onPress={() => {
+            navigation.navigate('Modify user');
+          }}
+        />
+        <Button
+          title={'My Files'}
+          onPress={() => {
+            navigation.navigate('My Files');
+          }}
+        />
+      </Card>
+    </ScrollView>
   );
 };
 
