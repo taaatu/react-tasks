@@ -10,7 +10,7 @@ import {PropTypes} from 'prop-types';
 const Profile = ({navigation}) => {
   const {setIsLoggedIn, user} = useContext(MainContext);
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
-  const {postTag, getFilesByTag} = useTag();
+  const {getFilesByTag} = useTag();
   console.log('Profile', user);
 
   const fetchAvatar = async () => {

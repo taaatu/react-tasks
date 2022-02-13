@@ -53,6 +53,7 @@ const Modify = ({navigation, route}) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <Input
+              label="Title"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -72,6 +73,7 @@ const Modify = ({navigation, route}) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <Input
+              label="Description"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -85,7 +87,7 @@ const Modify = ({navigation, route}) => {
 
         <Button
           loading={loading}
-          title="Upload"
+          title="Save changes"
           onPress={handleSubmit(onSubmit)}
         />
       </Card>
